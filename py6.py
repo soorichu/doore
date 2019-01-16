@@ -1,8 +1,12 @@
 # -*- coding: UTF-8 -*-
 import random
+import datetime
+import json
+
 
 class GameChractor:
 	change = {"warrior":[5, 2, 1, 1], "wizzard":[1, 2, 5, 1], "person":[2, 3, 2, 1]}
+	item = {"knife":[2, 2, 1, 0], "ax":[3, 2, 1, 0], "speer":[2, 3, 1, 0], 'stick':[0, 0, 5, 0], 'jewel':[1, 1, 1, 3], 'potion':[2, 2, 2, 2]}
 
 	def __init__(self, name, job):
 		self.name = name
@@ -65,13 +69,25 @@ class GameChractor:
 			
 
 	def show_info(self):
-		print("{0}({1}) Lv {2}.".format(self.name, self.job, self.level), end=" ")
-		for k in self.ability: 
-			print("{0}-{1}".format(k, self.ability[k]), end=" ")
-		print()
+		p = {'name': self.name, 'job':self.job, 'power':self.ability['power'], 
+			'speed':self.ability['speed'], 'intel':self.ability['intel'], 
+			'soul':self.ability['soul'], 'level':self.level, 'before_abi':self.before_abi}
+		j = json.dumps(p)
+		print(j)
+
+	def save(self):
+		p = {'name': self.name, 'job':self.job, 'power':self.ability['power'], 
+			'speed':self.ability['speed'], 'intel':self.ability['intel'], 
+			'soul':self.ability['soul'], 'level':self.level, 'before_abi':self.before_abi}
+		j = json.dumps(p)
+		file = open("save.sv", "w")
+		file.write(j)
+		file.close()
 
 	def __del__(self):
+		self.save()
 		print("Bye "+self.name)
+
 
 
 def game(n, war1, war2):
