@@ -1,16 +1,10 @@
+# -*- coding: UTF-8 -*-
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from pandas_datareader import data as web
 from datetime import datetime as dt
-import pandas as pd
-
-data = pd.read_csv("stocks.csv", sep=",", dtype="unicode", names=['value', 'label'])
-
-stock_options = []
-for i in range(len(data['label'])):
-	stock_options.append({'label': data['label'][i], 'value': data['value'][i]})
 
 app = dash.Dash()
 
@@ -18,8 +12,12 @@ app.layout = html.Div([
     html.H1('Yahoo Stock Ticker'),
     dcc.Dropdown(
         id='my-dropdown',
-        options= stock_options,
-        value = 'KREF'
+        options=[
+            {'label': 'Coke', 'value': 'COKE'},
+            {'label': 'Tesla', 'value': 'TSLA'},
+            {'label': 'Apple', 'value': 'AAPL'},
+        ],
+        value='COKE'
     ),
     dcc.Graph(id='my-graph')
 ])
@@ -37,4 +35,4 @@ def update_graph(selected_dropdown_value):
     }
 
 if __name__ == '__main__':
-    app.run_server(port=8070)
+    app.run_server(debug=True, port=8090)
